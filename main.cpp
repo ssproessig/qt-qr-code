@@ -8,6 +8,11 @@
 #include <QUuid>
 
 
+#ifndef QStringLiteral
+#define QStringLiteral QString
+#endif
+
+
 namespace
 {
 QString toSvgString(qrcodegen::QrCode const& qr, int const border)
