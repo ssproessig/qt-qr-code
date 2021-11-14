@@ -1,0 +1,19 @@
+[*]
+charset = utf-8
+insert_final_newline = true
+indent_size = 4
+indent_style = space
+tab_width = 4
+trim_trailing_whitespace = true
+
+[*.md]
+indent_size = 2
+max_line_length = 100
+trim_trailing_whitespace = false
+# Markdown settings for IntelliJ-based IDEs (avoids removing/adding newlines around headers)
+ij_markdown_max_lines_around_block_elements = 0
+ij_markdown_max_lines_around_header = 0
+ij_markdown_max_lines_between_paragraphs = 0
+ij_markdown_min_lines_around_block_elements = 2
+ij_markdown_min_lines_around_header = 2
+ij_markdown_min_lines_between_paragraphs = 2
