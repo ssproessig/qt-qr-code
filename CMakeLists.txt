@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
 
-project(qt_qr_code VERSION 0.0.1 LANGUAGES CXX)
+project(qt_qr_code VERSION 0.0.1 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 11)
 option(USE_QT4 "Perform a legacy build with Qt4" OFF)
 message("Option USE_QT4 is ${USE_QT4}")
@@ -9,6 +9,11 @@ message("Option USE_QT4 is ${USE_QT4}")
 add_library(qrcodegen-cpp STATIC
     ext/qrcodegen.cpp
     ext/qrcodegen.hpp
+)
+
+add_library(qrcodegen-c STATIC
+    ext/qrcodegen.c
+    ext/qrcodegen.h
 )
 
 
