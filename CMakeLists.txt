@@ -6,7 +6,7 @@ option(USE_QT4 "Perform a legacy build with Qt4" OFF)
 message("Option USE_QT4 is ${USE_QT4}")
 
 
-add_library(qrcodegen STATIC
+add_library(qrcodegen-cpp STATIC
     ext/qrcodegen.cpp
     ext/qrcodegen.hpp
 )
@@ -27,5 +27,5 @@ add_executable(qt_qr_code
 )
 target_link_libraries(qt_qr_code
     ${QT_LINK_LIBRARIES}
-    qrcodegen
+    qrcodegen-cpp
 )
