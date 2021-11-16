@@ -11,6 +11,7 @@
 #include <QTextStream>
 #include <QUuid>
 
+#include <stdexcept>
 
 #ifndef QStringLiteral
 #define QStringLiteral QString
@@ -22,7 +23,7 @@ namespace
 
 struct AbstractQrCode
 {
-    ~AbstractQrCode() {}
+    virtual ~AbstractQrCode() {}
     virtual QString getSvgFor(QString const& anUrl) = 0;
     virtual bool getModule(int x, int y) const = 0;
 
@@ -41,7 +42,7 @@ struct AbstractQrCode
         QString svgString;
         QTextStream str(&svgString);
 
-        auto const bv = size + (border * 2);
+        int const bv = size + (border * 2);
 
         str << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         str << "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" "
@@ -93,7 +94,7 @@ struct QrCApi : AbstractQrCode
                                        qrcodegen_Mask_AUTO,
                                        true);
 
-        return toSvgString(4, qrcodegen_getSize(qrcode));
+        return ok ? toSvgString(4, qrcodegen_getSize(qrcode)) : "";
     }
 
     bool getModule(int x, int y) const
@@ -129,7 +130,8 @@ int main(int argc, char** argv)
     // 1a) prepare the data to encode
     QString const id = "123";
     QString const token = QUuid::createUuid().toString();
-    auto const url = QStringLiteral("http://localhost:8080/api/v1/entity/%1/%2").arg(id).arg(token);
+    QString const url =
+            QStringLiteral("http://localhost:8080/api/v1/entity/%1/%2").arg(id).arg(token);
 
     // 1b) use qrcodegen to create SVG
 #ifdef USE_C_API
@@ -138,12 +140,12 @@ int main(int argc, char** argv)
     QrCppApi api;
 #endif
 
-    auto const svg = api.getSvgFor(url);
+    QString const svg = api.getSvgFor(url);
 
     // 2) use Qt to show the code
     QApplication app(argc, argv); //lint !e1788
-    auto sz = 300;
-    auto const args = QApplication::arguments();
+    int sz = 300;
+    QStringList const args = QApplication::arguments();
     if (args.count() > 1)
     {
         sz = args.at(1).toInt();
